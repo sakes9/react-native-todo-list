@@ -1,0 +1,20 @@
+root = true
+
+[*]
+# インデントスタイル （tab / space）
+indent_style = space
+
+# インデントサイズ
+indent_size = 2
+
+# 改行コード（lf/cr/crlf）
+end_of_line = lf
+
+# 文字コード
+charset = utf-8
+
+# 文末スペースのトリミング （true: 削除する / false: 削除しない）
+trim_trailing_whitespace = true
+
+# 最終行の改行 （true: 改行を入れる / false: 改行を入れない）
+insert_final_newline = true
