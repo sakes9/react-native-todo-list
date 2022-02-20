@@ -19,7 +19,7 @@ export default function HomeScreen({ navigation }) {
   return (
     <View style={styles.container}>
       <Text>ホーム画面</Text>
-      <StatusBar style="auto" />
+      <StatusBar style="light" />
     </View>
   );
 }
