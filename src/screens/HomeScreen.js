@@ -2,6 +2,7 @@ import { useLayoutEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import Checkmark from '../components/Checkmark';
 
 export default function HomeScreen({ navigation }) {
   useLayoutEffect(() => {
@@ -18,7 +19,7 @@ export default function HomeScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <Text>ホーム画面</Text>
+      <Checkmark complete={true} onPress={(complete) => console.log(complete)}></Checkmark>
       <StatusBar style="light" />
     </View>
   );
