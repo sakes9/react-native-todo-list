@@ -21,6 +21,10 @@ export default function HomeScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
+      <View style={{ width: '100%' }}>
+        <TodoListItem todoTitle={'てすとTodo'}></TodoListItem>
+      </View>
+
       <FloatingButton></FloatingButton>
       <StatusBar style="light" />
     </View>
