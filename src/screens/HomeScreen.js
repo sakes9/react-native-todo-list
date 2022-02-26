@@ -4,6 +4,7 @@ import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Checkmark from '../components/Checkmark';
 import TodoListItem from '../components/TodoListItem';
+import FloatingButton from '../components/FloatingButton';
 
 export default function HomeScreen({ navigation }) {
   useLayoutEffect(() => {
@@ -20,7 +21,7 @@ export default function HomeScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <TodoListItem todoTitle={'てすと'}></TodoListItem>
+      <FloatingButton></FloatingButton>
       <StatusBar style="light" />
     </View>
   );
