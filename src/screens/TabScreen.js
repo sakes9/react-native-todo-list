@@ -19,7 +19,10 @@ export default function TabScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <TabListItem tabTitle={'てすとたぶ'}></TabListItem>
+      <View style={{ width: '100%' }}>
+        <TabListItem tabTitle={'てすとたぶ'}></TabListItem>
+      </View>
+
       <StatusBar style="light" />
     </View>
   );
