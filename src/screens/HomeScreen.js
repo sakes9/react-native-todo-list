@@ -3,6 +3,7 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Checkmark from '../components/Checkmark';
+import TodoListItem from '../components/TodoListItem';
 
 export default function HomeScreen({ navigation }) {
   useLayoutEffect(() => {
@@ -19,7 +20,7 @@ export default function HomeScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <Checkmark complete={true} onPress={(complete) => console.log(complete)}></Checkmark>
+      <TodoListItem todoTitle={'てすと'}></TodoListItem>
       <StatusBar style="light" />
     </View>
   );
