@@ -1,6 +1,6 @@
 import React, { useLayoutEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, TouchableOpacity, Alert, useWindowDimensions } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Alert, useWindowDimensions, FlatList } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Checkmark from '../components/Checkmark';
 import TodoListItem from '../components/TodoListItem';
@@ -8,17 +8,20 @@ import FloatingButton from '../components/FloatingButton';
 import AlertUtil from '../utils/AlertUtil';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 
-const FirstRoute = () => <View style={{ flex: 1, backgroundColor: '#ff4081' }} />;
-
-const SecondRoute = () => <View style={{ flex: 1, backgroundColor: '#673ab7' }} />;
-
-const renderScene = SceneMap({
-  tab1: FirstRoute,
-  tab2: SecondRoute,
-  tab3: FirstRoute,
-  tab4: SecondRoute,
-  tab5: FirstRoute,
-});
+const DATA = [
+  {
+    id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
+    title: 'Todo1',
+  },
+  {
+    id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
+    title: 'Todo2',
+  },
+  {
+    id: '58694a0f-3da1-471f-bd96-145571e29d72',
+    title: 'Todo3',
+  },
+];
 
 export default function HomeScreen({ navigation }) {
   const layout = useWindowDimensions();
@@ -52,6 +55,17 @@ export default function HomeScreen({ navigation }) {
     AlertUtil.showTextInputAlert('Todo追加', '追加するTodo名を入力してください', (text) => console.log(text));
   }
 
+  const renderItem = ({ item }) => {
+    return <TodoListItem todoTitle={item.title}></TodoListItem>;
+  };
+
+  const renderScene = ({ route }) => {
+    switch (route.key) {
+      default:
+        return <FlatList data={DATA} renderItem={renderItem} keyExtractor={(item) => item.id} />;
+    }
+  };
+
   const renderTabBar = (props) => {
     return (
       <TabBar
@@ -76,10 +90,6 @@ export default function HomeScreen({ navigation }) {
         onIndexChange={setIndex}
         initialLayout={{ width: layout.width }}
       />
-
-      {/* <View style={{ width: '100%' }}>
-        <TodoListItem todoTitle={'てすとTodo'}></TodoListItem>
-      </View> */}
 
       <FloatingButton onPress={showAddTodoAlert}></FloatingButton>
       <StatusBar style="light" />
