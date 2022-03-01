@@ -2,8 +2,8 @@ import { StyleSheet, Image, TouchableOpacity } from 'react-native';
 
 const styles = StyleSheet.create({
   checkmark: {
-    width: 30,
-    height: 30,
+    width: 28,
+    height: 28,
   },
 });
 

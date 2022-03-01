@@ -1,11 +1,19 @@
 import { StyleSheet, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { ifIphoneX } from 'react-native-iphone-x-helper';
 
 const styles = StyleSheet.create({
   button: {
     position: 'absolute',
     right: 30,
-    bottom: 60,
+    ...ifIphoneX(
+      {
+        bottom: 60,
+      },
+      {
+        bottom: 30,
+      }
+    ),
     width: 60,
     height: 60,
     backgroundColor: '#167476',
