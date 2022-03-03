@@ -7,6 +7,7 @@ import TodoListItem from '../components/TodoListItem';
 import FloatingButton from '../components/FloatingButton';
 import AlertUtil from '../utils/AlertUtil';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
+import TextInputDialog from '../components/TextInputDialog';
 
 const DATA = [
   {
@@ -34,6 +35,8 @@ export default function HomeScreen({ navigation }) {
     { key: 'tab4', title: 'タブ4' },
     { key: 'tab5', title: 'タブ5' },
   ]);
+
+  const [visibleAddTodoAlert, setVisibleAddTodoAlert] = React.useState(false);
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -91,7 +94,17 @@ export default function HomeScreen({ navigation }) {
         initialLayout={{ width: layout.width }}
       />
 
-      <FloatingButton onPress={showAddTodoAlert}></FloatingButton>
+      <FloatingButton onPress={() => setVisibleAddTodoAlert(true)}></FloatingButton>
+
+      <TextInputDialog
+        visible={visibleAddTodoAlert}
+        title={'Todo追加'}
+        description={'追加するTodo名を入力してください'}
+        placeholder={'50文字以内'}
+        maxLength={50}
+        cancelCallback={() => setVisibleAddTodoAlert(false)}
+        okCallback={() => setVisibleAddTodoAlert(false)}></TextInputDialog>
+
       <StatusBar style="light" />
     </View>
   );
