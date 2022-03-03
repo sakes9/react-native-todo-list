@@ -1,13 +1,18 @@
 import React, { useLayoutEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, TouchableOpacity, Alert, useWindowDimensions, FlatList } from 'react-native';
+import { StyleSheet, View, TouchableOpacity, useWindowDimensions, FlatList } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import Checkmark from '../components/Checkmark';
 import TodoListItem from '../components/TodoListItem';
 import FloatingButton from '../components/FloatingButton';
-import AlertUtil from '../utils/AlertUtil';
-import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
+import { TabView, TabBar } from 'react-native-tab-view';
 import TextInputDialog from '../components/TextInputDialog';
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#F2F2F7',
+  },
+});
 
 const DATA = [
   {
@@ -49,14 +54,6 @@ export default function HomeScreen({ navigation }) {
       },
     });
   }, []);
-
-  /**
-   * Todo追加アラートを表示する
-   *
-   */
-  function showAddTodoAlert() {
-    AlertUtil.showTextInputAlert('Todo追加', '追加するTodo名を入力してください', (text) => console.log(text));
-  }
 
   const renderItem = ({ item }) => {
     return <TodoListItem todoTitle={item.title}></TodoListItem>;
@@ -109,12 +106,3 @@ export default function HomeScreen({ navigation }) {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#F2F2F7',
-    // alignItems: 'center',
-    // justifyContent: 'center',
-  },
-});

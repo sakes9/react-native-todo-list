@@ -34,11 +34,13 @@ export default function TabListItem({ tabTitle }) {
 
   return (
     <SwipeableRow onPress={btnTapped}>
-      <ListItem topDivider style={{ width: '100%' }}>
-        <ListItem.Content style={styles.listItem}>
-          <ListItem.Title style={styles.listItemTitle}>{`${tabTitle}`}</ListItem.Title>
-        </ListItem.Content>
-      </ListItem>
+      <TouchableOpacity activeOpacity={1}>
+        <ListItem topDivider style={{ width: '100%' }}>
+          <ListItem.Content style={styles.listItem}>
+            <ListItem.Title style={styles.listItemTitle}>{`${tabTitle}`}</ListItem.Title>
+          </ListItem.Content>
+        </ListItem>
+      </TouchableOpacity>
     </SwipeableRow>
   );
 }

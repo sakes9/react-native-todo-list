@@ -36,12 +36,14 @@ export default function TodoListItem({ todoTitle }) {
 
   return (
     <SwipeableRow onPress={btnTapped}>
-      <ListItem topDivider style={{ width: '100%' }}>
-        <ListItem.Content style={styles.listItem}>
-          <Checkmark complete={true}></Checkmark>
-          <ListItem.Title style={styles.listItemTitle}>{`${todoTitle}`}</ListItem.Title>
-        </ListItem.Content>
-      </ListItem>
+      <TouchableOpacity activeOpacity={1}>
+        <ListItem topDivider style={{ width: '100%' }}>
+          <ListItem.Content style={styles.listItem}>
+            <Checkmark complete={true}></Checkmark>
+            <ListItem.Title style={styles.listItemTitle}>{`${todoTitle}`}</ListItem.Title>
+          </ListItem.Content>
+        </ListItem>
+      </TouchableOpacity>
     </SwipeableRow>
   );
 }

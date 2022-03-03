@@ -1,6 +1,6 @@
 import { useLayoutEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, TouchableOpacity, FlatList } from 'react-native';
+import { StyleSheet, View, TouchableOpacity, FlatList } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import TabListItem from '../components/TabListItem';
 
@@ -25,12 +25,6 @@ const DATA = [
     title: 'タブ3',
   },
 ];
-
-const Item = ({ title }) => (
-  <View style={styles.item}>
-    <Text style={styles.title}>{title}</Text>
-  </View>
-);
 
 export default function TabScreen({ navigation }) {
   useLayoutEffect(() => {
