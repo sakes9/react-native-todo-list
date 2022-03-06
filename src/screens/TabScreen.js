@@ -14,9 +14,13 @@ const styles = StyleSheet.create({
   },
 });
 
+let selectedEditTabKey = '';
+let selectedEditTabName = '';
+
 export default function TabScreen({ navigation }) {
   const [tabList, setTabList] = React.useState([]);
   const [visibleAddTabAlert, setVisibleAddTabAlert] = React.useState(false);
+  const [visibleEditTabAlert, setVisibleEditTabAlert] = React.useState(false);
 
   const { tabReload } = React.useContext(TabContext);
 
@@ -46,6 +50,21 @@ export default function TabScreen({ navigation }) {
   }, []);
 
   /**
+   * タブ編集ダイアログ表示処理
+   *
+   * @param {string} editTabKey   編集するタブのキー
+   * @param {string} editTabName  編集するタブのタブ名
+   */
+  function showEditTodoAlert(editTabKey, editTabName) {
+    console.log('tabKey: ' + editTabKey + ' tabName: ' + editTabName);
+
+    selectedEditTabKey = editTabKey;
+    selectedEditTabName = editTabName;
+
+    setVisibleEditTabAlert(true);
+  }
+
+  /**
    * タブ追加処理
    *
    * @param {string} tabName  追加するタブ名
@@ -64,8 +83,30 @@ export default function TabScreen({ navigation }) {
     }
   }
 
+  /**
+   * タブ編集処理
+   *
+   * @param {string} tabName  編集後のタブ名
+   */
+  async function editTab(tabName) {
+    try {
+      const todoTabService = new TodoTabService();
+      await todoTabService.editTab(selectedEditTabKey, tabName);
+
+      const storageTabList = await todoTabService.getTabList();
+      setTabList(storageTabList);
+
+      tabReload.set(true);
+    } catch (e) {
+      Alert.alert('エラー', 'タブの編集に失敗しました', [{ text: 'OK' }]);
+    }
+
+    selectedEditTabKey = '';
+    selectedEditTabName = '';
+  }
+
   const renderItem = ({ item }) => {
-    return <TabListItem tabTitle={item.name}></TabListItem>;
+    return <TabListItem tabKey={item.key} tabTitle={item.name} listItemTapped={showEditTodoAlert}></TabListItem>;
   };
 
   return (
@@ -82,6 +123,19 @@ export default function TabScreen({ navigation }) {
         okCallback={async (text) => {
           await addTab(text);
           setVisibleAddTabAlert(false);
+        }}></TextInputDialog>
+
+      <TextInputDialog
+        visible={visibleEditTabAlert}
+        defaultValue={selectedEditTabName}
+        title={'タブ編集'}
+        description={'編集するタブ名を入力してください'}
+        placeholder={'20文字以内'}
+        maxLength={20}
+        cancelCallback={() => setVisibleEditTabAlert(false)}
+        okCallback={async (text) => {
+          await editTab(text);
+          setVisibleEditTabAlert(false);
         }}></TextInputDialog>
 
       <StatusBar style="light" />
