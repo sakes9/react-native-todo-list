@@ -41,6 +41,26 @@ export default class TodoTabService {
   }
 
   /**
+   * Todoタブを編集する
+   *
+   * @param {string} editTabKey   編集するタブのキー
+   * @param {string} editTabName  編集するタブのタブ名
+   * @memberof TodoTabService
+   */
+  async editTab(editTabKey, editTabName) {
+    try {
+      const tabList = await this.getTabList();
+      const editTabObj = tabList.filter((tabObj) => tabObj.key == editTabKey)[0];
+      editTabObj.name = editTabName;
+      const updateTabList = tabList.map((tabObj) => (tabObj.key == editTabKey ? editTabObj : tabObj));
+
+      await AsyncStorage.setItem('@tabKey', JSON.stringify(updateTabList));
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  /**
    * Todo一覧を取得
    *
    * @return {Promise<[string]>} タブ一覧（ストレージにタブ情報が存在しない場合は、空配列を返す）
