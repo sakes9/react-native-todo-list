@@ -1,10 +1,11 @@
-import React, { useLayoutEffect } from 'react';
+import React, { useEffect, useLayoutEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, View, TouchableOpacity, FlatList } from 'react-native';
+import { StyleSheet, View, TouchableOpacity, FlatList, Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import TabListItem from '../components/TabListItem';
 import TextInputDialog from '../components/TextInputDialog';
 import TodoTabService from '../services/TodoTabService';
+import { TabContext } from '../contexts/TabContext';
 
 const styles = StyleSheet.create({
   container: {
@@ -13,23 +14,11 @@ const styles = StyleSheet.create({
   },
 });
 
-const DATA = [
-  {
-    id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-    title: 'タブ1',
-  },
-  {
-    id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-    title: 'タブ2',
-  },
-  {
-    id: '58694a0f-3da1-471f-bd96-145571e29d72',
-    title: 'タブ3',
-  },
-];
-
 export default function TabScreen({ navigation }) {
+  const [tabList, setTabList] = React.useState([]);
   const [visibleAddTabAlert, setVisibleAddTabAlert] = React.useState(false);
+
+  const { tabReload } = React.useContext(TabContext);
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -43,13 +32,45 @@ export default function TabScreen({ navigation }) {
     });
   }, []);
 
+  useEffect(() => {
+    (async function () {
+      try {
+        const todoTabService = new TodoTabService();
+        const storageTabList = await todoTabService.getTabList();
+
+        setTabList(storageTabList);
+      } catch (e) {
+        setTabList([]);
+      }
+    })();
+  }, []);
+
+  /**
+   * タブ追加処理
+   *
+   * @param {string} tabName  追加するタブ名
+   */
+  async function addTab(tabName) {
+    try {
+      const todoTabService = new TodoTabService();
+      await todoTabService.addTab(tabName);
+
+      const storageTabList = await todoTabService.getTabList();
+      setTabList(storageTabList);
+
+      tabReload.set(true);
+    } catch (e) {
+      Alert.alert('エラー', 'タブの追加に失敗しました', [{ text: 'OK' }]);
+    }
+  }
+
   const renderItem = ({ item }) => {
-    return <TabListItem tabTitle={item.title}></TabListItem>;
+    return <TabListItem tabTitle={item.name}></TabListItem>;
   };
 
   return (
     <View style={styles.container}>
-      <FlatList contentContainerStyle={{ marginTop: 30 }} data={DATA} renderItem={renderItem} keyExtractor={(item) => item.id} />
+      <FlatList contentContainerStyle={{ marginTop: 30 }} data={tabList} renderItem={renderItem} keyExtractor={(item) => item.key} />
 
       <TextInputDialog
         visible={visibleAddTabAlert}
@@ -59,8 +80,7 @@ export default function TabScreen({ navigation }) {
         maxLength={20}
         cancelCallback={() => setVisibleAddTabAlert(false)}
         okCallback={async (text) => {
-          const todoTabSevice = new TodoTabService();
-          await todoTabSevice.addTab(text);
+          await addTab(text);
           setVisibleAddTabAlert(false);
         }}></TextInputDialog>
 
