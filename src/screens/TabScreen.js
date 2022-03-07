@@ -105,8 +105,27 @@ export default function TabScreen({ navigation }) {
     selectedEditTabName = '';
   }
 
+  /**
+   * タブ削除処理
+   *
+   * @param {string} tabKey 削除するタブのキー
+   */
+  async function deleteTab(tabKey) {
+    try {
+      const todoTabService = new TodoTabService();
+      await todoTabService.deleteTab(tabKey);
+
+      const storageTabList = await todoTabService.getTabList();
+      setTabList(storageTabList);
+
+      tabReload.set(true);
+    } catch (e) {
+      Alert.alert('エラー', 'タブの削除に失敗しました', [{ text: 'OK' }]);
+    }
+  }
+
   const renderItem = ({ item }) => {
-    return <TabListItem tabKey={item.key} tabTitle={item.name} listItemTapped={showEditTodoAlert}></TabListItem>;
+    return <TabListItem tabKey={item.key} tabTitle={item.name} listItemTapped={showEditTodoAlert} deleteBtnTapped={deleteTab}></TabListItem>;
   };
 
   return (
