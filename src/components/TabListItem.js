@@ -20,9 +20,10 @@ const styles = StyleSheet.create({
  * @param {string} tabKey   タブキー
  * @param {string} tabTitle タブタイトル
  * @param {(tabKey: string, tabTitle: string) => void)} listItemTapped リストタップ時の処理
+ * @param {(tabKey: string) => void)} deleteBtnTapped 削除ボタン押下時の処理
  * @return {TabListItem}
  */
-export default function TabListItem({ tabKey, tabTitle, listItemTapped }) {
+export default function TabListItem({ tabKey, tabTitle, listItemTapped, deleteBtnTapped }) {
   /**
    * ボタン押下処理
    *
@@ -31,6 +32,7 @@ export default function TabListItem({ tabKey, tabTitle, listItemTapped }) {
   function btnTapped(btnId) {
     if (btnId == 0) {
       // 削除処理を実行
+      deleteBtnTapped(tabKey);
     }
   }
 
