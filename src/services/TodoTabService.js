@@ -80,7 +80,7 @@ export default class TodoTabService {
   }
 
   /**
-   * Todo一覧を取得
+   * タブ一覧を取得
    *
    * @return {Promise<[string]>} タブ一覧（ストレージにタブ情報が存在しない場合は、空配列を返す）
    * @memberof TodoTabService
