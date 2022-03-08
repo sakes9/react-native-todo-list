@@ -41,6 +41,7 @@ export default function HomeScreen({ navigation }) {
   const [routes, setRoutes] = React.useState([]);
 
   const [tabList, setTabList] = React.useState([]);
+  const [taskList, setTaskList] = React.useState([]);
 
   const [visibleAddTodoAlert, setVisibleAddTodoAlert] = React.useState(false);
 
@@ -61,14 +62,20 @@ export default function HomeScreen({ navigation }) {
   useEffect(() => {
     (async function () {
       try {
+        // タブ取得
         const todoTabService = new TodoTabService();
         const storageTabList = await todoTabService.getTabList();
-
         setTabList(storageTabList);
+
+        // タスク取得
+        const todoTaskService = new TodoTaskService();
+        const storageTaskList = await todoTaskService.getTaskList();
+        setTaskList(storageTaskList);
 
         selectedTabKey = storageTabList.length ? storageTabList[0].key : '';
       } catch (e) {
         setTabList([]);
+        setTaskList([]);
         selectedTabKey = '';
       }
     })();
@@ -118,21 +125,22 @@ export default function HomeScreen({ navigation }) {
       const todoTaskService = new TodoTaskService();
       await todoTaskService.addTask(selectedTabKey, taskName);
 
-      // const storageTabList = await todoTabService.getTabList();
-      // setTabList(storageTabList);
+      const storageTaskList = await todoTaskService.getTaskList();
+      setTaskList(storageTaskList);
     } catch (e) {
       Alert.alert('エラー', 'Todoの追加に失敗しました', [{ text: 'OK' }]);
     }
   }
 
   const renderItem = ({ item }) => {
-    return <TodoListItem todoTitle={item.title}></TodoListItem>;
+    return <TodoListItem todoTitle={item.name}></TodoListItem>;
   };
 
   const renderScene = ({ route }) => {
     switch (route.key) {
       default:
-        return <FlatList data={DATA} renderItem={renderItem} keyExtractor={(item) => item.id} />;
+        const filterTaskList = taskList.filter((taskObj) => taskObj.key == route.key);
+        return <FlatList data={filterTaskList} renderItem={renderItem} keyExtractor={(item) => item.id} />;
     }
   };
 
