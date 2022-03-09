@@ -44,6 +44,26 @@ export default class TodoTaskService {
   }
 
   /**
+   * Todoタスクを編集する
+   *
+   * @param {string} taskId        編集するタスクのID
+   * @param {string} editTaskName  編集するタスクのタスク名
+   * @memberof TodoTaskService
+   */
+  async editTask(taskId, editTaskName) {
+    try {
+      const taskList = await this.getTaskList();
+      const editTaskObj = taskList.filter((taskObj) => taskObj.id == taskId)[0];
+      editTaskObj.name = editTaskName;
+      const updateTaskList = taskList.map((taskObj) => (taskObj.id == taskId ? editTaskObj : taskObj));
+
+      await AsyncStorage.setItem('@taskKey', JSON.stringify(updateTaskList));
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  /**
    * タスク一覧を取得
    *
    * @return {Promise<[string]>} タスク一覧（ストレージにタスク情報が存在しない場合は、空配列を返す）

@@ -33,6 +33,8 @@ const DATA = [
 ];
 
 let selectedTabKey = '';
+let selectedEditTaskId = '';
+let selectedEditTaskName = '';
 
 export default function HomeScreen({ navigation }) {
   const layout = useWindowDimensions();
@@ -44,6 +46,7 @@ export default function HomeScreen({ navigation }) {
   const [taskList, setTaskList] = React.useState([]);
 
   const [visibleAddTodoAlert, setVisibleAddTodoAlert] = React.useState(false);
+  const [visibleEditTodoAlert, setVisibleEditTodoAlert] = React.useState(false);
 
   const { tabReload } = React.useContext(TabContext);
 
@@ -116,6 +119,19 @@ export default function HomeScreen({ navigation }) {
   }, [tabList]);
 
   /**
+   * タスク編集ダイアログ表示処理
+   *
+   * @param {string} editTaskId   編集するタスクのID
+   * @param {string} editTaskName 編集するタスクのタスク名
+   */
+  function showEditTaskAlert(editTaskId, editTaskName) {
+    selectedEditTaskId = editTaskId;
+    selectedEditTaskName = editTaskName;
+
+    setVisibleEditTodoAlert(true);
+  }
+
+  /**
    * タスク追加処理
    *
    * @param {string} taskName  追加するタスク名
@@ -132,8 +148,28 @@ export default function HomeScreen({ navigation }) {
     }
   }
 
+  /**
+   * タスク編集処理
+   *
+   * @param {string} taskName  編集後のタスク名
+   */
+  async function editTask(taskName) {
+    try {
+      const todoTaskService = new TodoTaskService();
+      await todoTaskService.editTask(selectedEditTaskId, taskName);
+
+      const storageTaskList = await todoTaskService.getTaskList();
+      setTaskList(storageTaskList);
+    } catch (e) {
+      Alert.alert('エラー', 'Todoの編集に失敗しました', [{ text: 'OK' }]);
+    }
+
+    selectedEditTaskId = '';
+    selectedEditTaskName = '';
+  }
+
   const renderItem = ({ item }) => {
-    return <TodoListItem todoTitle={item.name}></TodoListItem>;
+    return <TodoListItem taskId={item.id} todoTitle={item.name} listItemTapped={showEditTaskAlert}></TodoListItem>;
   };
 
   const renderScene = ({ route }) => {
@@ -186,6 +222,19 @@ export default function HomeScreen({ navigation }) {
             okCallback={async (text) => {
               await addTask(text);
               setVisibleAddTodoAlert(false);
+            }}></TextInputDialog>
+
+          <TextInputDialog
+            visible={visibleEditTodoAlert}
+            defaultValue={selectedEditTaskName}
+            title={'Todo編集'}
+            description={'編集するTodo名を入力してください'}
+            placeholder={'50文字以内'}
+            maxLength={50}
+            cancelCallback={() => setVisibleEditTodoAlert(false)}
+            okCallback={async (text) => {
+              await editTask(text);
+              setVisibleEditTodoAlert(false);
             }}></TextInputDialog>
         </>
       )}

@@ -19,10 +19,12 @@ const styles = StyleSheet.create({
  * Todoリストアイテム
  *
  * @export
+ * @param {string} taskId    TodoタスクID
  * @param {string} todoTitle Todoタイトル
+ * @param {(taskId: string, todoTitle: string) => void)} listItemTapped リストタップ時の処理
  * @return {TodoListItem}
  */
-export default function TodoListItem({ todoTitle }) {
+export default function TodoListItem({ taskId, todoTitle, listItemTapped }) {
   /**
    * ボタン押下処理
    *
@@ -36,7 +38,7 @@ export default function TodoListItem({ todoTitle }) {
 
   return (
     <SwipeableRow onPress={btnTapped}>
-      <TouchableOpacity activeOpacity={1}>
+      <TouchableOpacity onPress={() => listItemTapped(taskId, todoTitle)} activeOpacity={1}>
         <ListItem topDivider style={{ width: '100%' }}>
           <ListItem.Content style={styles.listItem}>
             <Checkmark complete={true}></Checkmark>
