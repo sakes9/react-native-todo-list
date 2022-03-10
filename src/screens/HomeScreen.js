@@ -168,8 +168,25 @@ export default function HomeScreen({ navigation }) {
     selectedEditTaskName = '';
   }
 
+  /**
+   * タスク削除処理
+   *
+   * @param {string} taskId 削除するタスクのId
+   */
+  async function deleteTask(taskId) {
+    try {
+      const todoTaskService = new TodoTaskService();
+      await todoTaskService.deleteTask(taskId);
+
+      const storageTaskList = await todoTaskService.getTaskList();
+      setTaskList(storageTaskList);
+    } catch (e) {
+      Alert.alert('エラー', 'Todoの削除に失敗しました', [{ text: 'OK' }]);
+    }
+  }
+
   const renderItem = ({ item }) => {
-    return <TodoListItem taskId={item.id} todoTitle={item.name} listItemTapped={showEditTaskAlert}></TodoListItem>;
+    return <TodoListItem taskId={item.id} todoTitle={item.name} listItemTapped={showEditTaskAlert} deleteBtnTapped={deleteTask}></TodoListItem>;
   };
 
   const renderScene = ({ route }) => {
