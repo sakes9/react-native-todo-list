@@ -96,6 +96,26 @@ export default class TodoTaskService {
   }
 
   /**
+   * Todoタスクチェック
+   *
+   * @param {string}  taskId    タスクID
+   * @param {bool}    complete  タスク完了フラグ
+   * @memberof TodoTaskService
+   */
+  async checkTask(taskId, complete) {
+    try {
+      const taskList = await this.getTaskList();
+      const editTaskObj = taskList.filter((taskObj) => taskObj.id == taskId)[0];
+      editTaskObj.complete = complete;
+      const updateTaskList = taskList.map((taskObj) => (taskObj.id == taskId ? editTaskObj : taskObj));
+
+      await AsyncStorage.setItem('@taskKey', JSON.stringify(updateTaskList));
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  /**
    * タスク一覧を取得
    *
    * @return {Promise<[string]>} タスク一覧（ストレージにタスク情報が存在しない場合は、空配列を返す）

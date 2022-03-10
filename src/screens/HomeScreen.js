@@ -185,8 +185,34 @@ export default function HomeScreen({ navigation }) {
     }
   }
 
+  /**
+   * タスクチェック処理
+   *
+   * @param {string} taskId   タスクID
+   * @param {bool}   complete タスク完了フラグ
+   */
+  async function checkTask(taskId, complete) {
+    try {
+      const todoTaskService = new TodoTaskService();
+      await todoTaskService.checkTask(taskId, complete);
+
+      const storageTaskList = await todoTaskService.getTaskList();
+      setTaskList(storageTaskList);
+    } catch (e) {
+      Alert.alert('エラー', 'Todoのチェックに失敗しました', [{ text: 'OK' }]);
+    }
+  }
+
   const renderItem = ({ item }) => {
-    return <TodoListItem taskId={item.id} todoTitle={item.name} listItemTapped={showEditTaskAlert} deleteBtnTapped={deleteTask}></TodoListItem>;
+    return (
+      <TodoListItem
+        complete={item.complete}
+        taskId={item.id}
+        todoTitle={item.name}
+        checkmarkTapped={(taskId, complete) => checkTask(taskId, !complete)}
+        listItemTapped={showEditTaskAlert}
+        deleteBtnTapped={deleteTask}></TodoListItem>
+    );
   };
 
   const renderScene = ({ route }) => {
