@@ -55,9 +55,7 @@ export default function TabScreen({ navigation }) {
    * @param {string} editTabKey   編集するタブのキー
    * @param {string} editTabName  編集するタブのタブ名
    */
-  function showEditTodoAlert(editTabKey, editTabName) {
-    console.log('tabKey: ' + editTabKey + ' tabName: ' + editTabName);
-
+  function showEditTabAlert(editTabKey, editTabName) {
     selectedEditTabKey = editTabKey;
     selectedEditTabName = editTabName;
 
@@ -125,7 +123,7 @@ export default function TabScreen({ navigation }) {
   }
 
   const renderItem = ({ item }) => {
-    return <TabListItem tabKey={item.key} tabTitle={item.name} listItemTapped={showEditTodoAlert} deleteBtnTapped={deleteTab}></TabListItem>;
+    return <TabListItem tabKey={item.key} tabTitle={item.name} listItemTapped={showEditTabAlert} deleteBtnTapped={deleteTab}></TabListItem>;
   };
 
   return (

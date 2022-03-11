@@ -1,6 +1,8 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default class TodoTaskService {
+  TASK_KEY = '@taskKey';
+
   /**
    * TodoタスクのIDを作成する
    *
@@ -37,7 +39,7 @@ export default class TodoTaskService {
     try {
       let taskList = await this.getTaskList();
       taskList.push(addTaskObj);
-      await AsyncStorage.setItem('@taskKey', JSON.stringify(taskList));
+      await AsyncStorage.setItem(this.TASK_KEY, JSON.stringify(taskList));
     } catch (e) {
       throw e;
     }
@@ -57,7 +59,7 @@ export default class TodoTaskService {
       editTaskObj.name = editTaskName;
       const updateTaskList = taskList.map((taskObj) => (taskObj.id == taskId ? editTaskObj : taskObj));
 
-      await AsyncStorage.setItem('@taskKey', JSON.stringify(updateTaskList));
+      await AsyncStorage.setItem(this.TASK_KEY, JSON.stringify(updateTaskList));
     } catch (e) {
       throw e;
     }
@@ -73,7 +75,7 @@ export default class TodoTaskService {
     try {
       const taskList = await this.getTaskList();
       const updateTaskList = taskList.filter((taskObj) => taskObj.id != taskId);
-      await AsyncStorage.setItem('@taskKey', JSON.stringify(updateTaskList));
+      await AsyncStorage.setItem(this.TASK_KEY, JSON.stringify(updateTaskList));
     } catch (e) {
       throw e;
     }
@@ -89,7 +91,7 @@ export default class TodoTaskService {
     try {
       const taskList = await this.getTaskList();
       const updateTaskList = taskList.filter((taskObj) => taskObj.key != tabKey);
-      await AsyncStorage.setItem('@taskKey', JSON.stringify(updateTaskList));
+      await AsyncStorage.setItem(this.TASK_KEY, JSON.stringify(updateTaskList));
     } catch (e) {
       throw e;
     }
@@ -109,7 +111,7 @@ export default class TodoTaskService {
       editTaskObj.complete = complete;
       const updateTaskList = taskList.map((taskObj) => (taskObj.id == taskId ? editTaskObj : taskObj));
 
-      await AsyncStorage.setItem('@taskKey', JSON.stringify(updateTaskList));
+      await AsyncStorage.setItem(this.TASK_KEY, JSON.stringify(updateTaskList));
     } catch (e) {
       throw e;
     }
@@ -123,7 +125,7 @@ export default class TodoTaskService {
    */
   async getTaskList() {
     try {
-      const jsonValue = await AsyncStorage.getItem('@taskKey');
+      const jsonValue = await AsyncStorage.getItem(this.TASK_KEY);
       const jsonParse = jsonValue ? JSON.parse(jsonValue) : [];
 
       return jsonParse;
