@@ -13,6 +13,11 @@ const styles = StyleSheet.create({
     flex: 1,
     marginLeft: 10,
   },
+  strikethrough: {
+    textDecorationColor: '#167476',
+    textDecorationLine: 'line-through',
+    textDecorationStyle: 'solid',
+  },
 });
 
 /**
@@ -46,7 +51,7 @@ export default function TodoListItem({ complete, taskId, todoTitle, checkmarkTap
         <ListItem topDivider style={{ width: '100%' }}>
           <ListItem.Content style={styles.listItem}>
             <Checkmark complete={complete} onPress={(complete) => checkmarkTapped(taskId, complete)}></Checkmark>
-            <ListItem.Title style={styles.listItemTitle}>{`${todoTitle}`}</ListItem.Title>
+            <ListItem.Title style={[styles.listItemTitle, complete ? styles.strikethrough : {}]}>{`${todoTitle}`}</ListItem.Title>
           </ListItem.Content>
         </ListItem>
       </TouchableOpacity>

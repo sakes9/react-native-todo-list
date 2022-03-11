@@ -2,6 +2,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import TodoTaskService from './TodoTaskService';
 
 export default class TodoTabService {
+  TAB_KEY = '@tabKey';
+
   /**
    * Todoタブのキーを作成する
    *
@@ -36,7 +38,7 @@ export default class TodoTabService {
     try {
       let tabList = await this.getTabList();
       tabList.push(addTabObj);
-      await AsyncStorage.setItem('@tabKey', JSON.stringify(tabList));
+      await AsyncStorage.setItem(this.TAB_KEY, JSON.stringify(tabList));
     } catch (e) {
       throw e;
     }
@@ -56,7 +58,7 @@ export default class TodoTabService {
       editTabObj.name = editTabName;
       const updateTabList = tabList.map((tabObj) => (tabObj.key == editTabKey ? editTabObj : tabObj));
 
-      await AsyncStorage.setItem('@tabKey', JSON.stringify(updateTabList));
+      await AsyncStorage.setItem(this.TAB_KEY, JSON.stringify(updateTabList));
     } catch (e) {
       throw e;
     }
@@ -73,7 +75,7 @@ export default class TodoTabService {
       // タブを削除
       const tabList = await this.getTabList();
       const updateTabList = tabList.filter((tabObj) => tabObj.key != tabKey);
-      await AsyncStorage.setItem('@tabKey', JSON.stringify(updateTabList));
+      await AsyncStorage.setItem(this.TAB_KEY, JSON.stringify(updateTabList));
 
       // タブに紐づくタスクを削除
       const todoTaskService = new TodoTaskService();
@@ -91,7 +93,7 @@ export default class TodoTabService {
    */
   async getTabList() {
     try {
-      const jsonValue = await AsyncStorage.getItem('@tabKey');
+      const jsonValue = await AsyncStorage.getItem(this.TAB_KEY);
       const jsonParse = jsonValue ? JSON.parse(jsonValue) : [];
 
       return jsonParse;
