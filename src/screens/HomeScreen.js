@@ -9,6 +9,8 @@ import TextInputDialog from '../components/TextInputDialog';
 import TodoTabService from '../services/TodoTabService';
 import TodoTaskService from '../services/TodoTaskService';
 import { TabContext } from '../contexts/TabContext';
+import InitTodoTab from '../jsons/InitTodoTab.json';
+import InitTodoTask from '../jsons/InitTodoTask.json';
 
 const styles = StyleSheet.create({
   container: {
@@ -65,13 +67,26 @@ export default function HomeScreen({ navigation }) {
   useEffect(() => {
     (async function () {
       try {
-        // タブ取得
         const todoTabService = new TodoTabService();
+        const todoTaskService = new TodoTaskService();
+
+        // 初期設定Todo登録処理
+        const initTabList = await todoTabService.getTabList();
+        if (!initTabList.length) {
+          for (const todoTabKey in InitTodoTab) {
+            await todoTabService.addTab(InitTodoTab[todoTabKey].name, InitTodoTab[todoTabKey].key);
+          }
+
+          for (const todoTaskKey in InitTodoTask) {
+            await todoTaskService.addTask(InitTodoTask[todoTaskKey].key, InitTodoTask[todoTaskKey].name);
+          }
+        }
+
+        // タブ取得
         const storageTabList = await todoTabService.getTabList();
         setTabList(storageTabList);
 
         // タスク取得
-        const todoTaskService = new TodoTaskService();
         const storageTaskList = await todoTaskService.getTaskList();
         setTaskList(storageTaskList);
 
