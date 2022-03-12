@@ -116,6 +116,11 @@ export default function HomeScreen({ navigation }) {
     // タブ更新前に選択されていたタブを選択する
     const selectedTabIndex = tabList.findIndex((tabObj) => tabObj.key == selectedTabKey);
     0 <= selectedTabIndex ? setIndex(selectedTabIndex) : setIndex(0);
+
+    // 不具合修正
+    // TabViewのindex更新では、「onIndexChange」が動かないため、
+    // 明示的に選択されているタブのキーを更新する。
+    selectedTabKey = tabList.length ? (0 <= selectedTabIndex ? tabList[selectedTabIndex].key : tabList[0].key) : '';
   }, [tabList]);
 
   /**
