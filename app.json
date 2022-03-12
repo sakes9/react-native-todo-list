@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "react-native-todo-list",
+    "name": "Todoリスト",
     "slug": "react-native-todo-list",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -8,16 +8,20 @@
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#167476"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true
+      "buildNumber": "1.0.0",
+      "bundleIdentifier": "com.username.react.native.todo.list",
+      "supportsTablet": false
     },
     "android": {
+      "versionCode": 1,
+      "package": "com.username.react.native.todo.list",
       "icon": "./assets/android_icon.png"
     },
     "web": {
