@@ -1,5 +1,5 @@
 import { StyleSheet, TouchableOpacity } from 'react-native';
-import { ListItem } from 'react-native-elements';
+import { ListItem } from '@rneui/themed';
 import Checkmark from './Checkmark';
 import SwipeableRow from './SwipeableRow';
 
