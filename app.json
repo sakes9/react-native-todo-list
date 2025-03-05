@@ -21,7 +21,7 @@
     },
     "android": {
       "versionCode": 1,
-      "package": "com.username.react.native.todo.list",
+      "package": "com.username.todo.list",
       "icon": "./assets/android_icon.png"
     },
     "web": {
