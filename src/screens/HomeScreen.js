@@ -1,7 +1,7 @@
 import React, { useEffect, useLayoutEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, View, TouchableOpacity, useWindowDimensions, FlatList, Alert } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import { FontAwesome as Icon } from '@expo/vector-icons';
 import TodoListItem from '../components/TodoListItem';
 import FloatingButton from '../components/FloatingButton';
 import { TabView, TabBar } from 'react-native-tab-view';
